@@ -18,7 +18,7 @@ spec:
       containers:
         - name: frontend
           image: "{{ index .Values.frontend.image "repository" }}:{{ index .Values.frontend.image "tag" }}"
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          imagePullPolicy: "{{ index .Values.frontend.image "pullPolicy" }}"
           ports:
             - containerPort: {{ .Values.frontend.port }}
           volumeMounts:

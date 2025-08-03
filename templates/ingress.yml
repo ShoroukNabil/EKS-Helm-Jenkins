@@ -1,29 +1,29 @@
-{{- if .Values.ingress.enabled }}
+# templates/ingress.yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: three-tier-ingress
-  namespace: {{ .Values.namespace }}
+  name: app-ingress
   annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
 spec:
-  ingressClassName: nginx
   rules:
-    - host: {{ .Values.ingress.host }}
+    - host: {{ .Values.ingress.hostname }}
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: frontend-service
+                name: frontend
                 port:
-                  number: {{ .Values.frontend.port }}
+                  number: 80
           - path: /api
             pathType: Prefix
             backend:
               service:
-                name: backend-service
+                name: backend
                 port:
-                  number: {{ .Values.backend.port }}
-{{- end }}
+                  number: 8080

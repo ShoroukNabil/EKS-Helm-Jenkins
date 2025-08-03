@@ -22,7 +22,51 @@ spec:
         fsGroup: 101
       containers:
         - name: frontend
-          image: shoroukimage/frontend-app:lts
+          image: shoroukimage/frontend-app:ltsapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: three-tier
+  labels:
+    app: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101  # matches USER nginx in Dockerfile
+      containers:
+        - name: frontend
+          image: shoroukimage/frontend-app:lts   # <-- update image name
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.frontend.port }}

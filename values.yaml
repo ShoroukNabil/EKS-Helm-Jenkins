@@ -1,4 +1,5 @@
 namespace: three-tier
+createNamespace: false
 
 mysql:
   image: mysql:8.0

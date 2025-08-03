@@ -3,16 +3,16 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        CLUSTER_NAME = 'my-eks-cluster'
-        CHART_PATH = 'three-tier-app'
+        CLUSTER_NAME = 'kimit-demo'
+       // CHART_PATH = 'three-tier-app'
         RELEASE_NAME = 'three-tier'
-        NAMESPACE = 'default'
+        NAMESPACE = 'three-tier'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main' ,'https://github.com/ShoroukNabil/EKS-helm.git'
+                git branch: 'main' ,'https://github.com/ShoroukNabil/EKS-Helm-Jenkins.git'
             }
         }
 
@@ -28,7 +28,7 @@ pipeline {
         stage('Helm Deploy') {
             steps {
                 sh '''
-                helm upgrade --install $RELEASE_NAME $CHART_PATH \
+                helm upgrade --install $RELEASE_NAME . \
                     --namespace $NAMESPACE \
                     --set frontend.image=my-frontend:${BUILD_NUMBER} \
                     --set backend.image=my-backend:${BUILD_NUMBER}

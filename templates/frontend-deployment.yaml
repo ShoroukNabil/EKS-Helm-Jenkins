@@ -26,9 +26,9 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.frontend.port }}
-            securityContext:
-              runAsNonRoot: true
-              runAsUser: 101
-              runAsGroup: 101
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false

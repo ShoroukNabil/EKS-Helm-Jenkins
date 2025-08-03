@@ -15,9 +15,20 @@ spec:
       labels:
         app: frontend
     spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101  # nginx user ID
+        runAsGroup: 101 # nginx group ID
+        fsGroup: 101
       containers:
         - name: frontend
           image: shoroukimage/frontend-app:lts
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.frontend.port }}
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 101
+              runAsGroup: 101
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false

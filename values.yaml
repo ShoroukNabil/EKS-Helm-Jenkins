@@ -1,0 +1,31 @@
+namespace: three-tier
+
+mysql:
+  image: mysql:8.0
+  rootPassword: Dev_P@ssw0rd
+  user: appUser
+  password: Dev_P@ssw0rd
+  database: devops
+  storage: 1Gi
+  port: 3306
+
+frontend:
+  image:
+    repository: shoroukimage/frontend-app
+    tag: lts
+    pullPolicy: IfNotPresent
+  port: 80
+  replicaCount: 2
+
+backend:
+  image:
+    repository: shoroukimage/backend-app
+    tag: lts
+    pullPolicy: IfNotPresent
+  port: 8080
+  replicaCount: 2
+
+ingress:
+  enabled: true
+  host: myapp.demo.com
+

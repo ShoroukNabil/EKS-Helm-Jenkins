@@ -18,7 +18,7 @@ spec:
       containers:
         - name: frontend
           image: shoroukimage/frontend-app:lts
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: {{ .Values.frontend.port }}
           volumeMounts:

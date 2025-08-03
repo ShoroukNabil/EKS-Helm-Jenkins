@@ -15,7 +15,7 @@ frontend:
     repository: shoroukimage/frontend-app
     tag: lts
     pullPolicy: IfNotPresent
-  port: 8080
+  port: 4200
   replicaCount: 2
 
 backend:

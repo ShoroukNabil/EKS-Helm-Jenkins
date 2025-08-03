@@ -17,8 +17,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: shoroukimage/backend-app:lts
-          imagePullPolicy: IfNotPresent
+          image: "{{ index .Values.backend.image "repository" }}:{{ index .Values.backend.image "tag" }}"
+          imagePullPolicy: "{{ index .Values.backend.image "pullPolicy" }}"
           ports:
             - containerPort: {{ .Values.backend.port }}
           env:

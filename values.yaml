@@ -28,4 +28,3 @@ backend:
 ingress:
   enabled: true
   host: myapp.demo.com
-

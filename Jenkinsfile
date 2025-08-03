@@ -11,8 +11,8 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                git branch: 'main' ,'https://github.com/ShoroukNabil/EKS-Helm-Jenkins.git'
+           steps {
+                checkout scm
             }
         }
 

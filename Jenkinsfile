@@ -28,6 +28,7 @@ pipeline {
         stage('Helm Deploy') {
             steps {
                 sh '''
+                helm version
                 helm upgrade --install $RELEASE_NAME . \
                     --namespace $NAMESPACE \
                     --set frontend.image=my-frontend:${BUILD_NUMBER} \

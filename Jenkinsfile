@@ -27,10 +27,11 @@ pipeline {
 
         stage('Helm Deploy') {
             steps {
-                sh '''
+          sh '''
                 helm version
                 helm upgrade --install $RELEASE_NAME . \
                     --namespace $NAMESPACE \
+                    --create-namespace \
                     --set frontend.image=my-frontend:${BUILD_NUMBER} \
                     --set backend.image=my-backend:${BUILD_NUMBER}
                 '''

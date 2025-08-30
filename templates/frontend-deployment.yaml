@@ -1,45 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-deployment
-  namespace: three-tier
-  labels:
-    app: frontend
+  name: {{ include "frontend.fullname" . }}
+  namespace: {{ .Values.namespace }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.frontend.replicaCount }}
   selector:
     matchLabels:
-      app: frontend
+      app: {{ include "frontend.name" . }}
   template:
     metadata:
       labels:
-        app: frontend
+        app: {{ include "frontend.name" . }}
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 101
       containers:
         - name: frontend
-          image: shoroukimage/frontend-app:lts # <-- update with your image
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy }}
+          env:
+            - name: API_URL
+              value: {{ .Values.frontend.apiUrl | quote }}
           ports:
-            - containerPort: 8080
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 20
-          volumeMounts:
-            - name: nginx-config
-              mountPath: /etc/nginx/nginx.conf
-              subPath: nginx.conf
-      volumes:
-        - name: nginx-config
-          configMap:
-            name: nginx-config
+            - containerPort: {{ .Values.frontend.port }}

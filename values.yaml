@@ -17,6 +17,8 @@ frontend:
     pullPolicy: IfNotPresent
   port: 80
   replicaCount: 2
+  apiUrl: "http://backend.three-tier.svc.cluster.local:8084"
+
 
 backend:
   image:
